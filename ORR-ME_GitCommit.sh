@@ -8,7 +8,7 @@ git status
 changes=$(git status | grep -w -e nothing -e committed)
 echo "$changes"
 changes=${changes%$changedSuffex}
-changes=${changes%$unchangedSuffex}
+changes=${changes%%$unchangedSuffex}
 echo "${changes}"
 read
 git commit
