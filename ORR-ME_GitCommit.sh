@@ -9,3 +9,6 @@ read
 git commit
 echo $1
 git push
+
+#nothing to commit, working directory clean
+
