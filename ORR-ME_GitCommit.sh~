@@ -6,6 +6,6 @@ git status
 $changes  git status | grep committed
 $changes
 read
-#git commit
+git commit
 echo $1
 git push
