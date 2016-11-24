@@ -61,6 +61,12 @@ function pullBlock() {
 	cp -r /home/matthew/git/ORR-ME/* /home/matthew/Eclipse/Projects/ORR-ME/
 }
 
+########################### Push Block #######################################
+
+function pushBlock() {
+	git push
+}
+
 function input () {
 #Asks what you want it to do and then will direct you to the correct block of code to preform that function.
 read -r -p "Would you like to Push, Pull, or Commit your Project? (Hint: exit will end program)"

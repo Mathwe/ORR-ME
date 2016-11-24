@@ -54,11 +54,17 @@ function pullBlock() {
 	cp -r /home/matthew/Eclipse/Projects/ORR-ME /home/matthew/git/
 	cd /home/matthew/git/ORR-ME || exit
 	git add ./*
-	git commit -m Adding before a Pull to prevent data loss.
+	git commit -m "Adding before a Pull to prevent data loss."
 	git push
 	
 	git pull
 	cp -r /home/matthew/git/ORR-ME/* /home/matthew/Eclipse/Projects/ORR-ME/
+}
+
+########################### Push Block #######################################
+
+function pushBlock() {
+	git push
 }
 
 function input () {
