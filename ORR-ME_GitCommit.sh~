@@ -15,7 +15,7 @@ echo "$changes"
 case "$changes" in
 	'no')
 			printf "There are no changes to commit."
-			read
+			input
 			;;
 	'Ch')
 			printf "Changes found, Starting commit process.\n"

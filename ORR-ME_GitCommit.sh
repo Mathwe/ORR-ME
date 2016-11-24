@@ -30,7 +30,7 @@ case "$changes" in
 						exit
 						;;
 				*)
-						printf "Error Incorect input.  Good Bye."
+						printf "Error Incorect input.  Good Bye.\n"
 						exit
 						;;
 			esac
