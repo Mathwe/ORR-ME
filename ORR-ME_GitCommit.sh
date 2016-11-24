@@ -15,7 +15,7 @@ echo "$changes"
 case "$changes" in
 	'no')
 			printf "There are no changes to commit."
-			read
+			input
 			;;
 	'Ch')
 			printf "Changes found, Starting commit process.\n"
@@ -36,7 +36,7 @@ case "$changes" in
 			esac
 			;;
 	*)
-			printf "Critical Error Encountered when parsing changes.  Press any key to exit>>"
+			printf "Critical Error Encountered when parsing changes.  Press Return to exit>>"
 			read
 			exit
 			;;
@@ -71,7 +71,7 @@ case "$currentAction" in
 			input
 			;;
 esac
-printf "Have a Nice Day.  Press Any Key to Exit>>"
+printf "Have a Nice Day.  Press Return to Exit>>"
 read
 exit
 }
