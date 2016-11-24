@@ -8,8 +8,8 @@ unchangedSuffex="thing to commit, working directory *"
 #  goes well will ask you if you want to push your project as well.
 function commitBlock () {
 cp -r /home/matthew/Eclipse/Projects/ORR-ME /home/matthew/git/
-cd /home/matthew/git/ORR-ME
-git add *
+cd /home/matthew/git/ORR-ME || exit
+git add ./*
 #git status
 changes=$(git status | grep -w -e nothing -e committed)
 changes=${changes%$changedSuffex}
@@ -23,7 +23,7 @@ case "$changes" in
 	'Ch')
 			printf "Changes found, Starting commit process.\n"
 			git commit
-			read -p "Would you like to continue to Push? (y=yes, n=exit)"
+			read -r -p "Would you like to continue to Push? (y=yes, n=exit)"
 			newinput=$REPLY
 			case "$newinput" in
 				'y')
@@ -51,12 +51,19 @@ esac
 
 
 function pullBlock() {
+	cp -r /home/matthew/Eclipse/Projects/ORR-ME /home/matthew/git/
+	cd /home/matthew/git/ORR-ME || exit
+	git add ./*
+	git commit -m "Adding before a Pull to prevent data loss."
+	git push
 	
+	git pull
+	cp -r /home/matthew/git/ORR-ME/* /home/matthew/Eclipse/Projects/ORR-ME/
 }
 
 function input () {
 #Asks what you want it to do and then will direct you to the correct block of code to preform that function.
-read -p "Would you like to Push, Pull, or Commit your Project? (Hint: exit will end program)"
+read -r -p "Would you like to Push, Pull, or Commit your Project? (Hint: exit will end program)"
 currentAction=$REPLY
 echo "test"
 echo "$currentAction"
