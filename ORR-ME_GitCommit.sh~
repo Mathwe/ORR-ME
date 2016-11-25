@@ -81,7 +81,7 @@ isChanged changes
 #			exit
 #			;;
 #esac
-echo "$changes"
+echo "Var changes is: $changes"
 case "$changes" in
 	'true')
 		printf "Changes found, Starting commit process.\n"

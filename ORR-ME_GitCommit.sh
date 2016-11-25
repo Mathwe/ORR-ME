@@ -34,12 +34,11 @@ function isChanged () {
 			exit
 			;;
 	esac
-	echo "$return"
+#	echo "$return"
 	eval $remoteVar="'$return'"
 }
 
 ############################# Commit Function #############################
-#  This block copies my working directory to the git directory.  Then adds all new files.
 #	 Checks the old files for changes before running commit command.  Then assuming all 
 #  goes well will ask you if you want to push your project as well.
 function commitBlock () {
@@ -81,7 +80,7 @@ isChanged changes
 #			exit
 #			;;
 #esac
-echo "Var changes is: $changes"
+#echo "Var changes is: $changes"
 case "$changes" in
 	'true')
 		printf "Changes found, Starting commit process.\n"
