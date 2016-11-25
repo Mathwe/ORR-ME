@@ -1,6 +1,4 @@
 #!/bin/bash
-changedSuffex="anges to be committed:"
-unchangedSuffex="thing to commit, working directory *"
 workingDir="/home/matthew/Eclipse/Projects/ORR-ME"
 gitDir="/home/matthew/git/"
 projectDirName="ORR-ME"
@@ -11,6 +9,8 @@ projectDirName="ORR-ME"
 # and then getting the git status of the repository.
 function isChanged () {
 #	echo "Made it to isChanged ()"
+	local changedSuffex="anges to be committed:"
+	local unchangedSuffex="thing to commit, working directory *"
 	local remoteVar=$1
 	cp -r "$workingDir" "$gitDir"
 	cd "$gitDir/$projectDirName" || exit
@@ -42,57 +42,19 @@ function isChanged () {
 #	 Checks the old files for changes before running commit command.  Then assuming all 
 #  goes well will ask you if you want to push your project as well.
 function commitBlock () {
-#cp -r "$workingDir" "$gitDir"
-#cd /home/matthew/git/ORR-ME || exit
-#git add ./*
-#git status
-#changes=$(git status | grep -w -e nothing -e committed)
-#changes=${changes%$changedSuffex}
-#changes=${changes%%$unchangedSuffex}
-#echo "$changes"
 isChanged changes
-#case "$changes" in
-#	'no')
-#			printf "There are no changes to commit.\n"
-#			input
-#			;;
-#	'Ch')
-#			printf "Changes found, Starting commit process.\n"
-#			git commit
-#			read -r -p "Would you like to continue to Push? (y=yes, n=exit)"
-#			newinput=$REPLY
-#			case "$newinput" in
-#				'y')
-#						pushBlock
-#						;;
-#				'n')
-#						exit
-#						;;
-#				*)
-#						printf "Error Incorect input.  Good Bye.\n"
-#						exit
-#						;;
-#			esac
-#			;;
-#	*)
-#			printf "Critical Error Encountered when parsing changes.  Press Return to exit>>"
-#			read
-#			exit
-#			;;
-#esac
-#echo "Var changes is: $changes"
 case "$changes" in
 	'true')
 		printf "Changes found, Starting commit process.\n"
 			git commit
 			read -r -p "Would you like to continue to Push? (y=yes, n=exit)"
-			newinput=$REPLY
+			local newinput=$REPLY
 			case "$newinput" in
 				'y')
 						pushBlock
 						;;
 				'n')
-						exit
+						input
 						;;
 				*)
     				printf "Error Incorect input.  Good Bye.\n"
@@ -131,13 +93,21 @@ function pushBlock() {
 
 ########################## Auto Block ########################################
 function autoRun () {
-	read
+	isChanged changeStatus
+	case "$chagneStatus" in 
+		'true')
+			commitBlock
+			;;	
+		'false')
+			pullBlock
+			;;
+	esac
 }
 
 function input () {
 #Asks what you want it to do and then will direct you to the correct block of code to preform that function.
 read -r -p "Would you like to Push, Pull, or Commit your Project? (Hint: exit will end program)"
-currentAction=$REPLY
+local currentAction=$REPLY
 #echo "test"
 #echo "$currentAction"
 case "$currentAction" in
@@ -152,7 +122,7 @@ case "$currentAction" in
 			;;
 	"a")
 			autoRun
-			;&
+			;;
 	"auto")
 			autoRun
 			;;
