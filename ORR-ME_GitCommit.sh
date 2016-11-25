@@ -1,27 +1,90 @@
 #!/bin/bash
 changedSuffex="anges to be committed:"
 unchangedSuffex="thing to commit, working directory *"
+workingDir="/home/matthew/Eclipse/Projects/ORR-ME"
+gitDir="/home/matthew/git/"
+projectDirName="ORR-ME"
+
+############################# Change Detection ############################
+#return true if there are changes, return false if no changes.
+#Detects changes by copying working dir to git dir, adding all files to index
+# and then getting the git status of the repository.
+function isChanged () {
+#	echo "Made it to isChanged ()"
+	local remoteVar=$1
+	cp -r "$workingDir" "$gitDir"
+	cd "$gitDir/$projectDirName" || exit
+	git add ./*
+	status=$(git status | grep -w -e nothing -e committed)
+	status=${status%$changedSuffex}
+	status=${status%%$unchangedSuffex}
+	case "$status" in
+		'no')
+			printf "There are no changes.\n"
+			local return='false'
+			;;
+		'Ch')
+			printf "Changes are Present.\n"
+			local return='true'
+			;;
+		*)
+			printf "Unknown result from status.  Exitting due to error.\n"
+			printf "%s\n press return to exit" "$status"
+			read
+			exit
+			;;
+	esac
+	echo "$return"
+	eval $remoteVar="'$return'"
+}
 
 ############################# Commit Function #############################
 #  This block copies my working directory to the git directory.  Then adds all new files.
 #	 Checks the old files for changes before running commit command.  Then assuming all 
 #  goes well will ask you if you want to push your project as well.
 function commitBlock () {
-cp -r /home/matthew/Eclipse/Projects/ORR-ME /home/matthew/git/
-cd /home/matthew/git/ORR-ME || exit
-git add ./*
+#cp -r "$workingDir" "$gitDir"
+#cd /home/matthew/git/ORR-ME || exit
+#git add ./*
 #git status
-changes=$(git status | grep -w -e nothing -e committed)
-changes=${changes%$changedSuffex}
-changes=${changes%%$unchangedSuffex}
+#changes=$(git status | grep -w -e nothing -e committed)
+#changes=${changes%$changedSuffex}
+#changes=${changes%%$unchangedSuffex}
 #echo "$changes"
+isChanged changes
+#case "$changes" in
+#	'no')
+#			printf "There are no changes to commit.\n"
+#			input
+#			;;
+#	'Ch')
+#			printf "Changes found, Starting commit process.\n"
+#			git commit
+#			read -r -p "Would you like to continue to Push? (y=yes, n=exit)"
+#			newinput=$REPLY
+#			case "$newinput" in
+#				'y')
+#						pushBlock
+#						;;
+#				'n')
+#						exit
+#						;;
+#				*)
+#						printf "Error Incorect input.  Good Bye.\n"
+#						exit
+#						;;
+#			esac
+#			;;
+#	*)
+#			printf "Critical Error Encountered when parsing changes.  Press Return to exit>>"
+#			read
+#			exit
+#			;;
+#esac
+echo "Var changes is: $changes"
 case "$changes" in
-	'no')
-			printf "There are no changes to commit.\n"
-			input
-			;;
-	'Ch')
-			printf "Changes found, Starting commit process.\n"
+	'true')
+		printf "Changes found, Starting commit process.\n"
 			git commit
 			read -r -p "Would you like to continue to Push? (y=yes, n=exit)"
 			newinput=$REPLY
@@ -33,22 +96,22 @@ case "$changes" in
 						exit
 						;;
 				*)
-						printf "Error Incorect input.  Good Bye.\n"
+    				printf "Error Incorect input.  Good Bye.\n"
 						exit
 						;;
 			esac
 			;;
-	*)
-			printf "Critical Error Encountered when parsing changes.  Press Return to exit>>"
-			read
-			exit
+		'false')
+			printf "There are no changes to commit.\n"
+			input
 			;;
 esac
-
 }
 
 ############################ Pull Function ####################################
-
+#Starts by running a commit with a default discription.  This may not be neccessary.
+#Then pulls down the git version and copies it back over to the working dir.
+#Could probably just copy and add without using the actuall commit.
 
 function pullBlock() {
 	cp -r /home/matthew/Eclipse/Projects/ORR-ME /home/matthew/git/
@@ -62,17 +125,22 @@ function pullBlock() {
 }
 
 ########################### Push Block #######################################
-
+#Simply pushes current commits up to the repository.
 function pushBlock() {
 	git push
+}
+
+########################## Auto Block ########################################
+function autoRun () {
+	read
 }
 
 function input () {
 #Asks what you want it to do and then will direct you to the correct block of code to preform that function.
 read -r -p "Would you like to Push, Pull, or Commit your Project? (Hint: exit will end program)"
 currentAction=$REPLY
-echo "test"
-echo "$currentAction"
+#echo "test"
+#echo "$currentAction"
 case "$currentAction" in
 	'push')
 			pushBlock
